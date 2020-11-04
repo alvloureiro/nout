@@ -1,0 +1,23 @@
+apiVersion: skaffold/v2beta6
+kind: Config
+metadata:
+  name: microservices
+deploy:
+  kubectl:
+    manifests:
+      - infra/k8s/*
+      - infra/k8s-dev/*
+build:
+  local:
+    push: false
+  # googleCloudBuild:
+  #   projectId: project-id
+  artifacts:
+    - image: alvloureiro/auth-srv
+      context: auth
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
